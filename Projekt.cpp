@@ -10,8 +10,7 @@ extern SProject Projekt
 
 
 
-
-Timer timer;  // Timer für die Zeitmessung
+Timer timer(MILLIS);  // Timer für die Zeitmessung
 
 volatile bool timerStarted = false;
 float Time = 0;
@@ -32,8 +31,8 @@ const Bahnen BahnDefault =
     {36, 37},  // Bahn4
     {38, 39},  // Bahn5
     {40, 41},  // Bahn6
-    {42, 43},  // Bahn7
-    {44, 45}   // Bahn8
+    {43, 42},  // Bahn7
+    {45, 44}   // Bahn8
   },
   {
     {0.0, 0.0},  // Timer Bahn1
@@ -85,7 +84,7 @@ void TimerConfig(void)
   // Vergleichswert berechnen
   // f = 16 MHz / prescaler → dann Compare = f * interval
   // Beispiel: Prescaler 64
-  long compare = (16e6 / 64) * (5 / 1000.0) - 1;
+  long compare = (16e6 / 64) * (2 / 1000.0) - 1;
   OCR1A = compare;          // Compare Match Register A
 
   TCCR1B |= (1 << WGM12);   // CTC Mode
@@ -130,12 +129,12 @@ void show_Bahnsetup(void)
     Table(1, 4, 3 + B, 12);
     ScreenPrint("B");
     ScreenPrint(B + 1);
-    ScreenPrint(".1:");
+    ScreenPrint(".L:");
 
     Table(3, 4, 3 + B, 12);
     ScreenPrint("B");
     ScreenPrint(B + 1);
-    ScreenPrint(".2:");
+    ScreenPrint(".R:");
   }
 
   Table(1, 4,  11, 12);
@@ -164,7 +163,7 @@ void show_Bahnsetup(void)
 
     // Zeile 11 -> Klappe + Spannung
     Table(4, 4,  11, 12);
-    ScreenPrint(analogRead(A8) * 83 / 3069.0);
+    ScreenPrint(analogRead(A8) * 83.0 / 3069.0);
     //ScreenPrint(Bahn.tcount);
     
     Table(2, 4, 11, 12);
@@ -177,6 +176,7 @@ void show_Bahnsetup(void)
     if(Bestetigung(10)==0) continue; 
     else break;
   }
+
 }
 
 
@@ -211,19 +211,22 @@ void show_mTime(void)
     Table(1, 4, 3 + B, 12);
     ScreenPrint("B");
     ScreenPrint(B + 1);
-    ScreenPrint(".1:");
+    ScreenPrint(".L:");
 
     Table(3, 4, 3 + B, 12);
     ScreenPrint("B");
     ScreenPrint(B + 1);
-    ScreenPrint(".2:");
+    ScreenPrint(".R:");
   }
 
 
   // Warten auf Start des rennen
   while (1) 
   {
-    if (digitalRead(Bahn.klappe) == 1) continue;
+    //if (digitalRead(Bahn.klappe) == LOW) continue;
+    //else break;
+
+    if (Bestetigung(1) == 0) continue;
     else break;
   }
 
@@ -247,11 +250,14 @@ void show_mTime(void)
     //  Timer anzeigen
     Table(2, 4,  1, 12);
     ScreenPrint(Time/1000.0);
-    
 
-    // looptime Anzeigen
     Table(4, 4, 1, 12);
     ScreenPrint(LoopTime);
+
+
+
+
+
 
     // Bahnstatus anzeigen
 
@@ -262,15 +268,47 @@ void show_mTime(void)
         Table(2, 4, 3+B, 12);
         ScreenPrint(Bahn.time[B][0]);
         Bahn.status[B][0] = BahnStatus::Disp;
+
+        if(Bahn.status[B][0] == BahnStatus::Disp && Bahn.status[B][1] == BahnStatus::Disp )
+        {
+          if(Bahn.time[B][0] > Bahn.time[B][1])
+          {
+            Table(2, 4, 3+B, 12);
+            ScreenPrint(Bahn.time[B][0]);
+            ScreenPrint(" *");
+          }
+          else if(Bahn.time[B][0] <= Bahn.time[B][1])
+          {
+            Table(4, 4, 3+B, 12);
+            ScreenPrint(Bahn.time[B][0]);
+            ScreenPrint(" *");
+          }
+        } 
       }
 
-      Table(4, 4,  3+B, 12);
       if (Bahn.status[B][1] == BahnStatus::Ready) 
       {
         Table(4, 4, 3+B, 12);
         ScreenPrint(Bahn.time[B][1]);
         Bahn.status[B][1] = BahnStatus::Disp;
+
+        if(Bahn.status[B][0] == BahnStatus::Disp && Bahn.status[B][1] == BahnStatus::Disp )
+        {
+          if(Bahn.time[B][0] > Bahn.time[B][1])
+          {
+            Table(2, 4, 3+B, 12);
+            ScreenPrint(Bahn.time[B][0]);
+            ScreenPrint(" *");
+          }
+          else if(Bahn.time[B][0] <= Bahn.time[B][1])
+          {
+            Table(4, 4, 3+B, 12);
+            ScreenPrint(Bahn.time[B][0]);
+            ScreenPrint(" *");
+          }
+        }       
       }
+
     }
 
     if(Bestetigung(30)==0) continue;
@@ -348,17 +386,18 @@ void show_Serial(void)
   ansi.clearScreen();
   ansi.foreground(2);        // Grün
   ansi.cursorHide();         // Cursor ausblenden
-
+  Serial.println("");
+  Serial.println("Rennzeiten:");
   for (int B = 0; B < 8; B++) 
   { 
     Serial.print("B");
     Serial.print(B+1);
-    Serial.print(".1:;");
+    Serial.print(".L:;");
     Serial.print(Bahn.time[B][0]);
     Serial.print(";");
     Serial.print("B");
     Serial.print(B+1);
-    Serial.print(".2:;");
+    Serial.print(".R:;");
     Serial.print(Bahn.time[B][1]);
     Serial.println(";");
 
@@ -377,19 +416,19 @@ void show_Serial(void)
 // Interrupt ISR
 void TimeMessure(void) 
 {
-  Time = (float)timer.read();
+  Time = (float)timer.read()*1.0129;
   LoopTime = Time - TimeOld;
   TimeOld = Time;
   
   for (int B = 0; B < 8; B++) 
   { 
-    if (Bahn.status[B][0] == BahnStatus::Running && digitalRead(Bahn.pins[B][0])==LOW) 
+    if (Bahn.status[B][0] == BahnStatus::Running && digitalRead(Bahn.pins[B][0])==HIGH) 
     {
       Bahn.time[B][0]   = Time/1000.0;
       Bahn.status[B][0] = BahnStatus::Ready;
       Raceover--;
     }
-    if (Bahn.status[B][1] == BahnStatus::Running && digitalRead(Bahn.pins[B][1])==LOW) 
+    if (Bahn.status[B][1] == BahnStatus::Running && digitalRead(Bahn.pins[B][1])==HIGH) 
     {
       Bahn.time[B][1]   = Time/1000.0;
       Bahn.status[B][1] = BahnStatus::Ready;
@@ -402,22 +441,22 @@ void TimeMessure(void)
     timer.stop();
     timerStarted = false;
   }
-  Time = (float)timer.read();
-  
+
 }
 
 // ISR
 ISR(TIMER1_COMPA_vect) {
-    if (timerStarted) {
-        TimeMessure();       // deine Funktion
+    if (timerStarted) 
+    {
+      TimeMessure();       // deine Funktion
     }
 }
 
 // Startfunktion
 void startRace() 
 {
-  timerStarted = true;
   timer.start();            // Zeitmessung starten
+  timerStarted = true;
   TimeMessure();            // einmal direkt beim Start aufrufen
 
 }

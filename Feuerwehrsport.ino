@@ -41,12 +41,12 @@ void setup(void)
   // Bahn-Pin-Konfiguration
   for (int B = 0; B < 8; B++) 
   {
-    pinMode(Bahn.pins[B][0], INPUT_PULLUP);  //Bahn pin Config
-    pinMode(Bahn.pins[B][1], INPUT_PULLUP);  //Bahn pin Config 
+    pinMode(Bahn.pins[B][0], INPUT);  //Bahn pin Config
+    pinMode(Bahn.pins[B][1], INPUT);  //Bahn pin Config 
   }
 
   // Pin-Konfiguration für die Klappe
-  pinMode(Bahn.klappe, INPUT_PULLUP);  //Klappe
+  pinMode(Bahn.klappe, INPUT);  //Klappe
 
   // Pin-Konfiguration für den Taster
   pinMode(Bahn.taster, INPUT_PULLUP);  //Taster

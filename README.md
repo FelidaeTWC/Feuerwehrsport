@@ -17,3 +17,21 @@ Ist ein Arduino Mega 2560 Projekt.
 
 1. Arduino IDE öffnen
 2. Bibliotheken über **Sketch → Bibliothek einbinden → Bibliotheken verwalten** suchen und installieren
+
+
+
+
+Serial Zeiten Ausgabe in CSV
+alle ungenutzeten Bahnen sind 0.00
+
+
+Rennzeiten:
+B1.L:;21.63;B1.R:;22.53;
+B2.L:;23.97;B2.R:;25.67;
+B3.L:;0.00;B3.R:;0.00;
+B4.L:;0.00;B4.R:;0.00;
+B5.L:;0.00;B5.R:;0.00;
+B6.L:;0.00;B6.R:;0.00;
+B7.L:;0.00;B7.R:;0.00;
+B8.L:;0.00;B8.R:;0.00;
+
