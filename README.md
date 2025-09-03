@@ -24,6 +24,7 @@ Ist ein Arduino Mega 2560 Projekt.
 Serial Zeiten Ausgabe in CSV
 alle ungenutzeten Bahnen sind 0.00
 
+```
 
 Rennzeiten:
 B1.L:;21.63;B1.R:;22.53;
@@ -34,5 +35,4 @@ B5.L:;0.00;B5.R:;0.00;
 B6.L:;0.00;B6.R:;0.00;
 B7.L:;0.00;B7.R:;0.00;
 B8.L:;0.00;B8.R:;0.00;
-
-
+```
