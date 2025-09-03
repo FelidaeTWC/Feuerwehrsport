@@ -1,8 +1,8 @@
 # Feuerwehrsport
-Ist ein Arduino Mega 2560 Projekt.
+Dies ist ein Arduino Mega 2560-Projekt.
 
 
-## Benötigte Bibliotheken Stand 09.2025
+## Benötigte Bibliotheken (Stand: 09/2025)
 
 
 | Bibliothek             | Version | Autor / Quelle | GitHub                                                     |
@@ -19,10 +19,9 @@ Ist ein Arduino Mega 2560 Projekt.
 2. Bibliotheken über **Sketch → Bibliothek einbinden → Bibliotheken verwalten** suchen und installieren
 
 
-
-
-Serial Zeiten Ausgabe in CSV
-alle ungenutzeten Bahnen sind 0.00
+## Serial Output
+Die Zeiten werden über die serielle Schnittstelle wie folgt ausgegeben.
+Alle ungenutzten Bahnen zeigen 0.00 an.
 
 ```
 
