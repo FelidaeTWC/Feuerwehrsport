@@ -31,8 +31,8 @@ const Bahnen BahnDefault =
     {36, 37},  // Bahn4
     {38, 39},  // Bahn5
     {40, 41},  // Bahn6
-    {43, 42},  // Bahn7
-    {45, 44}   // Bahn8
+    {42, 43},  // Bahn7
+    {44, 45}   // Bahn8
   },
   {
     {0.0, 0.0},  // Timer Bahn1
@@ -223,11 +223,11 @@ void show_mTime(void)
   // Warten auf Start des rennen
   while (1) 
   {
-    //if (digitalRead(Bahn.klappe) == LOW) continue;
-    //else break;
-
-    if (Bestetigung(1) == 0) continue;
+    if (digitalRead(Bahn.klappe) == LOW) continue;
     else break;
+
+    //if (Bestetigung(1) == 0) continue;
+    //else break;
   }
 
   // Rennen Starten
@@ -253,10 +253,6 @@ void show_mTime(void)
 
     Table(4, 4, 1, 12);
     ScreenPrint(LoopTime);
-
-
-
-
 
 
     // Bahnstatus anzeigen
@@ -381,7 +377,7 @@ void show_Serial(void)
   }
   tft.setTextSize(2);
   tftTable(1,2,TFTTableWidth,12,12);
-  tft.println("Auswertung wir gsendet");
+  tft.println("Auswertung wird gsendet");
 
   ansi.clearScreen();
   ansi.foreground(2);        // Grün
@@ -422,13 +418,13 @@ void TimeMessure(void)
   
   for (int B = 0; B < 8; B++) 
   { 
-    if (Bahn.status[B][0] == BahnStatus::Running && digitalRead(Bahn.pins[B][0])==HIGH) 
+    if (Bahn.status[B][0] == BahnStatus::Running && digitalRead(Bahn.pins[B][0])==LOW) 
     {
       Bahn.time[B][0]   = Time/1000.0;
       Bahn.status[B][0] = BahnStatus::Ready;
       Raceover--;
     }
-    if (Bahn.status[B][1] == BahnStatus::Running && digitalRead(Bahn.pins[B][1])==HIGH) 
+    if (Bahn.status[B][1] == BahnStatus::Running && digitalRead(Bahn.pins[B][1])==LOW) 
     {
       Bahn.time[B][1]   = Time/1000.0;
       Bahn.status[B][1] = BahnStatus::Ready;
