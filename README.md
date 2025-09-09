@@ -35,3 +35,9 @@ B6.L:;0.00;B6.R:;0.00;
 B7.L:;0.00;B7.R:;0.00;
 B8.L:;0.00;B8.R:;0.00;
 ```
+
+
+
+## Pinout Mega2560
+![Schaltung-PINOUT.png](/Schaltung-PINOUT.png)
+
