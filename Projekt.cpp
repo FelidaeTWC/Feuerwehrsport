@@ -259,49 +259,27 @@ void show_mTime(void)
 
     for (int B = 0; B < 8; B++) 
     {
-      if (Bahn.status[B][0] == BahnStatus::Ready) 
+      if (Bahn.status[B][0] == BahnStatus::Ready) // wenn Bahn Links fertig
       {
         Table(2, 4, 3+B, 12);
-        ScreenPrint(Bahn.time[B][0]);
-        Bahn.status[B][0] = BahnStatus::Disp;
+        ScreenPrint(Bahn.time[B][0]); // Bahn Zeit ausgeben.
+        Bahn.status[B][0] = BahnStatus::Disp; 
 
-        if(Bahn.status[B][0] == BahnStatus::Disp && Bahn.status[B][1] == BahnStatus::Disp )
+        if(Bahn.status[B][1] == BahnStatus::Disp ) // wenn bahn Rechts Soch voher Fertig -> Bahn Links ist die lagsamere 
         {
-          if(Bahn.time[B][0] > Bahn.time[B][1])
-          {
-            Table(2, 4, 3+B, 12);
-            ScreenPrint(Bahn.time[B][0]);
-            ScreenPrint(" *");
-          }
-          else if(Bahn.time[B][0] <= Bahn.time[B][1])
-          {
-            Table(4, 4, 3+B, 12);
-            ScreenPrint(Bahn.time[B][0]);
-            ScreenPrint(" *");
-          }
+          ScreenPrint(" *");  // * zeigt die labsamere Seite der Bahn
         } 
       }
 
-      if (Bahn.status[B][1] == BahnStatus::Ready) 
+      if (Bahn.status[B][1] == BahnStatus::Ready)  // wenn Bahn Rechts fertig
       {
         Table(4, 4, 3+B, 12);
-        ScreenPrint(Bahn.time[B][1]);
+        ScreenPrint(Bahn.time[B][1]); // Bahn Zeit ausgeben.
         Bahn.status[B][1] = BahnStatus::Disp;
 
-        if(Bahn.status[B][0] == BahnStatus::Disp && Bahn.status[B][1] == BahnStatus::Disp )
+        if(Bahn.status[B][0] == BahnStatus::Disp  ) // wenn bahn Links schon voher Fertig -> Bahn Rechts ist die lagsamere 
         {
-          if(Bahn.time[B][0] > Bahn.time[B][1])
-          {
-            Table(2, 4, 3+B, 12);
-            ScreenPrint(Bahn.time[B][0]);
-            ScreenPrint(" *");
-          }
-          else if(Bahn.time[B][0] <= Bahn.time[B][1])
-          {
-            Table(4, 4, 3+B, 12);
-            ScreenPrint(Bahn.time[B][0]);
-            ScreenPrint(" *");
-          }
+          ScreenPrint(" *"); // * zeigt die labsamere Seite der Bahn
         }       
       }
 
